@@ -1,0 +1,4 @@
+Name,Description,Value
+"Trophy","A shiny trophy, it has chipped corners",15
+"Bag of Coins","A bag of coins",10
+"Key","It looks like a silver key",0

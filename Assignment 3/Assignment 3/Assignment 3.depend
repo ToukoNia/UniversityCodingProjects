@@ -1,0 +1,59 @@
+# depslib dependency file v1.0
+1713221602 source:c:\users\rayne\documents\university work\acs 130\c assignments\assignment 3\assignment 3\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"setup.h"
+	"roomOptions.h"
+
+1713221602 c:\users\rayne\documents\university work\acs 130\c assignments\assignment 3\assignment 3\setup.h
+	"setupStructs.h"
+
+1713218473 c:\users\rayne\documents\university work\acs 130\c assignments\assignment 3\assignment 3\setupstructs.h
+
+1713220511 source:c:\users\rayne\documents\university work\acs 130\c assignments\assignment 3\assignment 3\setup.c
+	<stdio.h>
+	<stdlib.h>
+	"setup.h"
+
+1713191437 source:c:\users\rayne\documents\university work\acs 130\c assignments\assignment 3\assignment 3\usermanagement.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"userManagement.h"
+
+1713191341 c:\users\rayne\documents\university work\acs 130\c assignments\assignment 3\assignment 3\usermanagement.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1713219579 source:c:\users\rayne\documents\university work\acs 130\c assignments\assignment 3\assignment 3\gamecontroller.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"gameController.h"
+
+1713207749 c:\users\rayne\documents\university work\acs 130\c assignments\assignment 3\assignment 3\gamecontroller.h
+	<stdio.h>
+	<stdlib.h>
+	"userManagement.h"
+	"setupStructs.h"
+
+1713206140 source:c:\users\rayne\documents\university work\acs 130\c assignments\assignment 3\assignment 3\combat.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"combat.h"
+
+1713203238 c:\users\rayne\documents\university work\acs 130\c assignments\assignment 3\assignment 3\combat.h
+	"gameController.h"
+
+1713221686 c:\users\rayne\documents\university work\acs 130\c assignments\assignment 3\assignment 3\roomoptions.h
+	"combat.h"
+
+1713221699 source:c:\users\rayne\documents\university work\acs 130\c assignments\assignment 3\assignment 3\roomoptions.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"roomOptions.h"
+

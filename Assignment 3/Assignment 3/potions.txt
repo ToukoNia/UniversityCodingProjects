@@ -1,0 +1,7 @@
+Name,Healing,Description,Value
+"Red Potion",5,"It is a light red colour in a translucent bottle.",2
+"Green Potion",2,"It is a green potion. It kinda looks like slime.",1
+"Purple Potion",-2,"It is a dark purple colour. It's smell reminds you of wine.",1
+"Yellow Potion",1,"This smells and looks like honey.",3
+"Pink Potion",-6,"The pink liquid inside smells sweet.",5
+"Teal Potion",-3,"Should drinks even be this colour?",0

@@ -1,0 +1,5 @@
+Name,Health,LowerDamageLimit,UpperDamageLimit,Description
+"Slime",4,1,3,"Its a green ball seemingly made of slime. It looks cute, but you probably shouldn't touch it."
+"Goblin",6,2,3,"A short green woman, holding a primitive spear. It is babbling at you in a language you can't understand."
+"Mimic",8,2,4,"It looks like a chest. With legs."
+"Minotaur",12,4,6,"Half bull-half man. It has ragged horns and glowing red eyes. It has a key around its neck."
