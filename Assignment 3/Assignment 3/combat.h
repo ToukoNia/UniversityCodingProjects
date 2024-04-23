@@ -14,6 +14,6 @@ void displayMonsterInfo(struct monster subject);
 
 void monsterAttack(int *health,int maxHealth,int lDamage, int uDamage);
 
-int combatInitiate(struct gameController *player, struct monster enemy);
+int combatInitiate(struct gameController *player, struct monster *enemy);
 
 #endif /* COMBAT_H */

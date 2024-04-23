@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "setup.h"
-
+/*
+This file does all the setup before the main code has to run
+*/
 FILE *openFile(const char *filename,const char *type) {
     FILE *file = fopen(filename, type);
     if (file == NULL) {
@@ -14,25 +17,27 @@ FILE *openFile(const char *filename,const char *type) {
 //Function to read monsters in from a file
 int setupMonsters(const char *filename,struct monster monsters[NUM_MONSTERS]) {
     FILE *fin = openFile(filename,"r");
-    char line[512]; // Assuming the maximum length of a line in the file
+    char line[LINEMAX]; // sets up framework for smallest line
     int errorOccurred = 0; // Flag variable to track errors
     for (int i = 0; i < NUM_MONSTERS+1 && !errorOccurred; i++) { //loops until either an error is caused, or until all the monsters have populated the script
         if (fgets(line, sizeof(line), fin) != NULL) {
             if (i != 0){ // Skip the first line (header)
                 // Parse the line and populate the monster structure
-                if (sscanf(line, "\"%49[^\"]\",%d,%d,%d,\"%99[^\"]\"",
+                if (sscanf(line, "'%20[^']',%d,%d,%d,'%200[^']'",
                            monsters[i-1].name,
                            &monsters[i-1].health,
                            &monsters[i-1].lDamage,
                            &monsters[i-1].uDamage,
                            monsters[i-1].description) != 5) //uses scanf to allocate all of the monster's values.
                 {
-                    fprintf(stderr, "Error: Invalid format in line %d of 'monster.txt'.\n", i+1);
+                    fprintf(stderr, "Error: Invalid format in line %d of '%s'.\n", i+1,filename);
                     errorOccurred = 1; // Set flag to indicate error
                 }
+                monsters[i-1].name[NAME_LEN-1]='\0';
+                monsters[i-1].description[DESC_SIZE-1]='\0';  //termination character
             }
         } else {
-            fprintf(stderr, "Error: Unable to read line %d of 'monster.txt'.\n", i+1);
+            fprintf(stderr, "Error: Unable to read line %d of '%s'.\n", i+1,filename);
             errorOccurred = 1; // Set flag to indicate error
         }
     }
@@ -43,91 +48,94 @@ int setupMonsters(const char *filename,struct monster monsters[NUM_MONSTERS]) {
 // Function to read items from a file
 int setupItems(const char *filename, struct item items[NUM_ITEMS]) {
     FILE *fin = openFile(filename,"r");
-    char line[512]; // Assuming maximum length of a line
-    int error_occurred=0;
+    char line[LINEMAX]; // Assuming maximum length of a line
+    int errorOccurred=0;
     // Read items from file
-    for (int i=0;i<NUM_ITEMS+1 && !error_occurred;i++){
+    for (int i=0;i<NUM_ITEMS+1 && !errorOccurred;i++){
         if (fgets(line, sizeof(line), fin) != NULL) {   //reads in the line
             if (i!=0){
-                if (sscanf(line, "\"%49[^\"]\",\"%99[^\"]\",%d",
+                if (sscanf(line, "'%20[^']','%200[^']',%d",
                            items[i-1].base.name,
                            items[i-1].base.description,
                            &items[i-1].base.value) != 3){ //scans in the values. If it errors, outputs to the user
                     fprintf(stderr, "Error: Invalid format in line %d of 'item.txt'.\n", i+1);
-                    error_occurred=1;   // Set flag to indicate error
+                    errorOccurred=1;   // Set flag to indicate error
                 }
                 items[i-1].base.index=i-1;
             }
         }
         else{
             fprintf(stderr, "Error: Unable to read line %d of 'item.txt'.\n", i+1);
-            error_occurred=1;   // Set flag to indicate error
+            errorOccurred=1;   // Set flag to indicate error
         }
     }
     fclose(fin);
-    return error_occurred;
+    return errorOccurred;
 }
 
 int setupWeapons(const char *filename, struct weapon weapons[NUM_WEAPONS]){
     FILE *fin = openFile(filename,"r");
-    char line[512]; // Assuming maximum length of a line
-    int error_occurred=0;
+    char line[LINEMAX]; // Assuming maximum length of a line
+    int errorOccurred=0;
     // Read items from file
-    for (int i=0;i<NUM_WEAPONS+1 && !error_occurred;i++){
+    for (int i=0;i<NUM_WEAPONS+1 && !errorOccurred;i++){
         if (fgets(line, sizeof(line), fin) != NULL) {   //reads in the line
             if (i!=0){
-                if (sscanf(line, "\"%49[^\"]\",%d,%d,\"%99[^\"]\",%d",
+                if (sscanf(line, "'%20[^']',%d,%d,'%200[^']',%d",
                weapons[i-1].base.name,
                &weapons[i-1].lDamage,
                &weapons[i-1].uDamage,
                weapons[i-1].base.description,
                &weapons[i-1].base.value) != 5) { //scans in the values. If it errors, outputs to the user
                     fprintf(stderr, "Error: Invalid format in line %d of 'weapons.txt'.\n", i+1);
-                    error_occurred=1;   // Set flag to indicate error
+                    errorOccurred=1;   // Set flag to indicate error
                 }
                 weapons[i-1].base.index=i-1;
             }
         }
         else{
             fprintf(stderr, "Error: Unable to read line %d of 'weapons.txt'.\n", i+1);
-            error_occurred=1;   // Set flag to indicate error
+            errorOccurred=1;   // Set flag to indicate error
         }
     }
-    weapons[0].base.index=-1;
     fclose(fin);
-    return error_occurred;
+    return errorOccurred;
 }
 
 int setupPotions(const char *filename, struct potion potions[NUM_POTIONS]){
     FILE *fin = openFile(filename,"r");
-    char line[512]; // Assuming maximum length of a line
-    int error_occurred=0;
+    char line[LINEMAX]; // Assuming maximum length of a line
+    int errorOccurred=0;
     // Read items from file
-    for (int i=0;i<NUM_POTIONS+1 && !error_occurred;i++){
+    for (int i=0;i<NUM_POTIONS+1 && !errorOccurred;i++){
         if (fgets(line, sizeof(line), fin) != NULL) {   //reads in the line
             if (i!=0){
-                if (sscanf(line, "\"%49[^\"]\",%d,\"%99[^\"]\",%d",
+                if (sscanf(line, "'%20[^']',%d,'%200[^']',%d",
                potions[i-1].base.name,
                &potions[i-1].healing,
                potions[i-1].base.description,
                &potions[i-1].base.value) != 4) { //scans in the values. If it errors, outputs to the user
                     fprintf(stderr, "Error: Invalid format in line %d of 'potions.txt'.\n", i+1);
-                    error_occurred=1;   // Set flag to indicate error
+                    errorOccurred=1;   // Set flag to indicate error
                 }
                 potions[i-1].base.index=i-1;
             }
         }
         else{
             fprintf(stderr, "Error: Unable to read line %d of 'potions.txt'.\n", i+1);
-            error_occurred=1;   // Set flag to indicate error
+            errorOccurred=1;   // Set flag to indicate error
         }
     }
+
     fclose(fin);
-    return error_occurred;
+    return errorOccurred;
 }
 
 void setupGameController(struct gameController *player,struct weapon fist){
-    strcpy(player->name,"Alexys");
+    resetInputBuffer();
+    printf("Please enter your player's name: ");
+    fgets(player->name, sizeof(player->name), stdin);
+    player->name[strcspn(player->name, "\n")] = '\0';
     player->inv.itemCount=player->inv.potionCount=0;
     player->health=player->maxHealth=MAX_HEALTH;
     player->currentRoomIndex=0;
@@ -135,8 +143,13 @@ void setupGameController(struct gameController *player,struct weapon fist){
     player->equippedWeapon=fist;
 }
 
-int setup(struct gameController *player,struct monster monsters[NUM_MONSTERS],struct objects *lists){
+void setupRooms(const char *filename,struct roomNode rooms[MAX_ROOMS]){
+    GenerateRooms(filename,rooms);
+}
+
+int setup(struct gameController *player,struct monster monsters[NUM_MONSTERS],struct objects *lists,struct roomNode rooms[MAX_ROOMS],int loadSave){
     int error=0;
+
     // Read monsters from file
     error += setupMonsters("monsters.txt", monsters);
 
@@ -149,10 +162,19 @@ int setup(struct gameController *player,struct monster monsters[NUM_MONSTERS],st
     // Read potions from file
     error += setupPotions("potions.txt", lists->potions);
 
+
+    if (loadSave){
+        error+=loadGameSave("savePlayer.txt",player,lists->weapons);
+        error+=loadRooms("saveRooms.txt",rooms);
+        error+=loadInventory("saveInv.txt",player->inv,*lists);
+
+    } else{
+        setupRooms("roomTypes.txt",rooms);
+        setupGameController(player,lists->weapons[0]);
+    }
     if (error) {
         return 1;
     }
-    setupGameController(player,lists->weapons[0]);
 
     return 0;
 }
@@ -160,12 +182,13 @@ int setup(struct gameController *player,struct monster monsters[NUM_MONSTERS],st
 void savePlayerState(const char *filename,struct gameController player,const char *filename2){
     FILE *fin = openFile(filename,"w");
     fprintf(fin,"name,currentRoomIndex,lastRoomIndex,health,itemCount,potionCount.\n");
-    fprintf(fin,"%s,",player.name);
+    fprintf(fin,"'%s',",player.name);
     fprintf(fin,"%d,",player.currentRoomIndex);
     fprintf(fin,"%d,",player.lastRoomIndex);
     fprintf(fin,"%d,",player.health);
     fprintf(fin,"%d,",player.inv.itemCount);
-    fprintf(fin,"%d",player.inv.potionCount);
+    fprintf(fin,"%d,",player.inv.potionCount);
+    fprintf(fin,"%d",player.equippedWeapon.base.index);
     fclose(fin);
     saveInventoryState(filename2,player.inv);
 }
@@ -180,45 +203,157 @@ void saveInventoryState(const char *filename,struct inventory inv){
         }
     }
     fprintf(fin,"\n");
-    for (int i=0;i<inv.itemCount;i++){
+    for (int i=0;i<inv.potionCount;i++){
         fprintf(fin,"%d",inv.potions[i].base.index);
-        if (i!=inv.itemCount-1){
+        if (i!=inv.potionCount-1){
             fprintf(fin,",");
         }
     }
     fclose(fin);
 }
 
-void saveRoomState(const char *filename,struct roomNode rooms[NUM_ROOMS]){
+void saveMonsterHealth(const char *filename,struct monster monsters[NUM_MONSTERS]){
+    FILE *fin=openFile(filename,"w");
+    fprintf(fin,"Health of monsters.\n");
+    for (int i=0;i<NUM_MONSTERS;i++){
+        fprintf(fin,"%d\n",monsters[i].health);
+    }
+    fclose(fin);
+}
+void saveRoomState(const char *filename,struct roomNode rooms[MAX_ROOMS]){
     FILE *fin = openFile(filename,"w");
     fprintf(fin,"type,objectIndex,objectList,monsterIndex,north,east,south,west\n");
-     for (int i=0;i<NUM_ROOMS;i++){
-        fprintf(fin,"%s,%d,%d,%d,%d,%d,%d,%d\n",rooms[i].type,rooms[i].objectIndex,rooms[i].objectList,rooms[i].monsterIndex,rooms[i].connections[0],rooms[i].connections[1],rooms[i].connections[2],rooms[i].connections[3]);
+     for (int i=0;i<MAX_ROOMS;i++){
+        fprintf(fin,"'%s','%s',%d,%d,%d,%d,%d,%d,%d\n",rooms[i].type,rooms[i].description,rooms[i].objectIndex,rooms[i].objectList,rooms[i].monsterIndex,rooms[i].connections[0],rooms[i].connections[1],rooms[i].connections[2],rooms[i].connections[3]);
     }
+    fclose(fin);
 }
 
-void saveGame(struct gameController player,struct roomNode rooms[NUM_ROOMS]){
+void saveGame(struct gameController player,struct roomNode rooms[MAX_ROOMS],struct monster monsters[NUM_MONSTERS]){
     char choice,validChoices[2]={'Y','N'};
     choice=sanitisedUserInput("Would you like to save the game? Previous saves will be deleted. (Y/N) ", validChoices, 2);
     if (choice=='Y'){
         savePlayerState("savePlayer.txt",player,"saveInv.txt");
         saveRoomState("saveRooms.txt",rooms);
+        saveMonsterHealth("saveMonsters.txt",monsters);
     }
 }
 
-void loadGameSave(struct gameController *player,struct roomNode *rooms[NUM_ROOMS],struct objects lists){
-    char line[500];
-    FILE *fin = openFile("savePlayer.txt,"w");
-    fgets(line, sizeof(line), fin);
+int loadGameSave(const char *filename,struct gameController *player,struct weapon weapons[NUM_WEAPONS]){
+    char line[LINEMAX];
+    int errorOccurred=0;
+    int equippedWeaponIndex=0;
+    FILE *fin = openFile(filename,"r");
+    fgets(line, sizeof(line), fin); //skips the first line
+
     if (fgets(line, sizeof(line), fin) != NULL) {   //reads in the line
-        if (sscanf(line, "%19[^,],%d,%d,%d,%d,%d", player->name, player.currentRoomIndex, player.lastRoomIndex,
-                player.health, player.inv.itemCount, player.inv.potionCount)!=6){
-                    fprintf(stderr, "Error: Invalid format in line %d of 'savePlayer.txt'.\n", i+1);
-                    error_occurred=1;   // Set flag to indicate error
+        if (sscanf(line, "%20[^,],%d,%d,%d,%d,%d,%d", player->name, &player->currentRoomIndex, &player->lastRoomIndex,
+                &player->health, &player->inv.itemCount, &player->inv.potionCount, &equippedWeaponIndex) != 7){    //scans in the values and assigns them to the player struct
+                    fprintf(stderr, "Error: Invalid format in line 2 of '%s'.\n",filename);
+                    errorOccurred=1;   // Set flag to indicate error
                 }
         }
     fclose(fin);
-
+    player->equippedWeapon=weapons[equippedWeaponIndex];
+    player->maxHealth=MAX_HEALTH;
+    return errorOccurred;
 }
 
+int loadInventory(const char *filename,struct inventory inv,struct objects lists){
+    int errorOccurred=0;
+    char line[3];
+    int index;
+    FILE *fin = openFile(filename,"r");
+    for (int i=0;i<inv.itemCount++ && !errorOccurred;i++){
+        if (fgets(line, sizeof(line), fin) != NULL) {   //reads in the line
+            if (i!=0){
+                if (sscanf(line, "%d", &index)!=1){
+                    fprintf(stderr, "Error: Invalid format in line %d of '%s'.\n", i+1,filename);
+                    errorOccurred=1;   // Set flag to indicate error
+                } else{
+                    inv.items[i-1]=lists.items[index];
+                }
+            }
+        }
+        else{
+            fprintf(stderr, "Error: Unable to read line %d of '%s'.\n", i+1,filename);
+            errorOccurred=1;   // Set flag to indicate error
+        }
+
+    }
+    for (int i=0;i<inv.potionCount++ && !errorOccurred;i++){
+        if (fgets(line, sizeof(line), fin) != NULL) {   //reads in the line
+            if (i!=0){
+                if (sscanf(line, "%d", &index)!=1){
+                    fprintf(stderr, "Error: Invalid format in line %d of '%s'.\n", i+1,filename);
+                    errorOccurred=1;   // Set flag to indicate error
+                } else{
+                    inv.potions[i-1]=lists.potions[index];
+                }
+            }
+        }
+        else{
+            fprintf(stderr, "Error: Unable to read line %d of '%s'.\n", i+1,filename);
+            errorOccurred=1;   // Set flag to indicate error
+        }
+    }
+    fclose(fin);
+    return errorOccurred;
+}
+
+int loadRooms(char *filename,struct roomNode rooms[MAX_ROOMS]){
+    FILE *fin = openFile(filename,"r");
+    char line[LINEMAX];
+    int errorOccurred=0;
+    for (int i=0;i<MAX_ROOMS+1 && !errorOccurred;i++){
+        if (fgets(line, sizeof(line), fin) != NULL) {   //reads in the line
+            if (i!=0){
+                if (sscanf(line, "'%20[^']','%200[^']',%d,%d,%d,%d,%d,%d,%d,%d",
+                rooms[i-1].type,
+                rooms[i-1].description,
+                &rooms[i-1].objectIndex,
+                &rooms[i-1].objectList,
+                &rooms[i-1].monsterIndex,
+                &rooms[i-1].connections[0],
+                &rooms[i-1].connections[1],
+                &rooms[i-1].connections[2],
+                &rooms[i-1].connections[3]) != 9) { //scans in the values. If it errors, outputs to the user
+                    fprintf(stderr, "Error: Invalid format in line %d of '%s'.\n", i+1,filename);
+                    errorOccurred=1;   // Set flag to indicate error
+                }
+                rooms[i - 1].connectionCount = 0;
+                rooms[i - 1].connectionCount = 0;
+            }
+        }
+        else{
+            fprintf(stderr, "Error: Unable to read line %d of '%s'.\n", i+1,filename);
+            errorOccurred=1;   // Set flag to indicate error
+        }
+    }
+    fclose(fin);
+    return errorOccurred;
+}
+
+int loadMonsters(char *filename,struct monster monsters[NUM_MONSTERS]){
+    FILE *fin =openFile(filename,"r");
+    char line[LINEMAX];
+    int errorOccurred=0;
+
+    for (int i=0;i<NUM_MONSTERS+1 && !errorOccurred;i++){
+        if (fgets(line, sizeof(line), fin) != NULL) {   //reads in the line
+            if (i!=0){
+                if (sscanf(line, "%d", &monsters[i-1].health)!=1){
+                    fprintf(stderr, "Error: Invalid format in line %d of '%s'.\n", i+1,filename);
+                    errorOccurred=1;   // Set flag to indicate error
+                }
+            }
+        }
+        else{
+            fprintf(stderr, "Error: Unable to read line %d of '%s'.\n", i+1,filename);
+            errorOccurred=1;   // Set flag to indicate error
+        }
+    }
+    fclose(fin);
+    return errorOccurred;
+}
 

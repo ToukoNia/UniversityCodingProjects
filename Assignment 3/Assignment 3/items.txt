@@ -1,4 +1,8 @@
 Name,Description,Value
-"Trophy","A shiny trophy, it has chipped corners",15
-"Bag of Coins","A bag of coins",10
-"Key","It looks like a silver key",0
+'Trophy','A shiny trophy, it has chipped corners',15
+'Bag of Coins','A bag of coins',10
+'Chest','It is a locked chest. It looks like it will fetch a good price though.',15
+'Gold','It is a bar of gold. Very heavy, but cool.',12
+'Emerald Ring','An old ring, seemingly with an emerald in it',5
+'Opal Necklace','It looks pretty.',7
+'Minotaur Horn','You got the Minotaur Horn! You are set for life now if you can escape.',999

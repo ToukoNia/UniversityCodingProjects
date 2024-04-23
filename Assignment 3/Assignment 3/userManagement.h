@@ -9,6 +9,6 @@ void resetInputBuffer();
 void printSeparator();
 int sanitisedUserNumberInput(char* message, int lBound, int uBound);
 char sanitisedUserInput(char* message,char options[],int numOptions);
-int sanitisedUserDirectionInput(int connections[4]);
+int sanitisedUserDirectionInput(int connections[4],int notFirst);
 
 #endif /* USER_MANAGEMENT_H */

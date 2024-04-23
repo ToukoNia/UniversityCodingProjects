@@ -35,7 +35,7 @@ void displayMonsterInfo(struct monster subject){ //prints out the monster inform
     printf("\n");
 }
 
-int combatInitiate(struct gameController *player,struct monster enemy){
+int combatInitiate(struct gameController *player,struct monster *enemy){
     char choice;
     int dmg,ran,enemyDead,playerDead;
     char validOptions1[2]={'Y','N'};
@@ -43,11 +43,11 @@ int combatInitiate(struct gameController *player,struct monster enemy){
 
     ran=enemyDead=playerDead=0;             //sets them all to zero
 
-    printf("You encounter a %s.\n",enemy.name);
-    printf("You have entered combat with the %s.\n",enemy.name);
+    printf("You encounter a %s.\n",enemy->name);
+    printf("You have entered combat with the %s.\n",enemy->name);
     choice=sanitisedUserInput("Would you like to look at the monster? (Y/N) ",validOptions1,2);
     if (choice=='Y'){
-        displayMonsterInfo(enemy);
+        displayMonsterInfo(*enemy);
     }
     while (!enemyDead&&!ran&&!playerDead){
         printSeparator();
@@ -55,13 +55,13 @@ int combatInitiate(struct gameController *player,struct monster enemy){
         choice=sanitisedUserInput("Would you like to [F]ight, use a [P]otion or [R]un? ",validOptions2,3);
         switch (choice){   //matches the user input to the correct function to continue
             case 'F':
-                playerAttack(&enemy,player->equippedWeapon);
+                playerAttack(enemy,player->equippedWeapon);
                 break;
             case 'P':
                 choosePotion(player);
                 choice=sanitisedUserInput("Would you like to look at the monster? (Y/N) ",validOptions1,2);
                 if (choice=='Y'){
-                    displayMonsterInfo(enemy);
+                    displayMonsterInfo(*enemy);
                 }
                 break;
             case 'R':
@@ -71,25 +71,23 @@ int combatInitiate(struct gameController *player,struct monster enemy){
         }
 
         printSeparator();
-        if (enemy.health<=0){
+        if (enemy->health<=0){
             enemyDead=1;
         } else{
-            printf("Press enter to continue: ");
-            resetInputBuffer();
-            while (getchar() != '\n');
+            waitForEnter(1);
             printSeparator();
-            printf("It is the %s's turn.\n",enemy.name);
-            monsterAttack(&player->health,player->maxHealth,enemy.lDamage,enemy.uDamage);
+            printf("It is the %s's turn.\n",enemy->name);
+            monsterAttack(&player->health,player->maxHealth,enemy->lDamage,enemy->uDamage);
         }
         if (player->health==0){
             playerDead=1;
-            }
+        }
     }
     if (ran){
         return 0;
     }
     else if (enemyDead){
-        printf("You killed the %s.\n",enemy.name);
+        printf("You killed the %s.\n",enemy->name);
         return 1;
     }
     else if (playerDead){

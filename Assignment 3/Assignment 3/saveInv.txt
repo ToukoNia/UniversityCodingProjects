@@ -1,2 +1,2 @@
-First 0 items are items, and then the next 1 are potions.
+First 0 items are items, and then the next 0 are potions.
 

@@ -1,5 +1,6 @@
 Name,Health,LowerDamageLimit,UpperDamageLimit,Description
-"Slime",4,1,3,"Its a green ball seemingly made of slime. It looks cute, but you probably shouldn't touch it."
-"Goblin",6,2,3,"A short green woman, holding a primitive spear. It is babbling at you in a language you can't understand."
-"Mimic",8,2,4,"It looks like a chest. With legs."
-"Minotaur",12,4,6,"Half bull-half man. It has ragged horns and glowing red eyes. It has a key around its neck."
+'Slime',4,1,3,'It is a green ball seemingly made of slime. It looks cute, but you probably should not touch it.'
+'Goblin',5,2,3,'A short green woman, holding a primitive spear. It is babbling at you in a language you cannot understand.'
+'Mimic',6,2,4,'It looks like a chest. With legs.'
+'Ghoul',8,3,4,'You cannot see its body, but my god is that a LOT of blood around its mouth.'
+'Minotaur',12,4,6,'Half bull and half man. It has ragged horns and glowing red eyes. Their horns sell for a good price'

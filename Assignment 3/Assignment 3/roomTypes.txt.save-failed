@@ -1,0 +1,16 @@
+name,description,suggested monster
+'Starting Room','You are in a large room made of wood beams and stone. On one exit you can see the door that you entered here through.',-1
+'Throne Room','A medium room with a throne in the centre. It looks big enough for a huge creature.',4
+'Dead End','A cramped closet like space.',-1
+'Dead End','A room that seemed to go somewhere, but damage has left it not fully intact.',-1
+'Hallway','A short hallway with blood stains on the floor. How nice.',-1
+'Hallway','It is a large room with shadows cast by flickering lights. It has gouges in the walls.',-1
+'Hallway','There is a torch on the stone walls, with a door at the end.',-1
+'Long Hallway','A long hallway, with cobbled walls. You can see an opening at the end.',-1
+'Long Hallway','A long hallway. Trekking down it makes you question what your fighting for.',-1
+'Small Room','It is a small room with a treasure chest.',2
+'Small Room','This room seems to have a mirror in it.\nIs that really your reflection now? You look tired.',-1
+'Room','It is a room with slime across the walls.',0
+'Room','It is a room with a goblin sitting in it.',1
+'Large Room','Despite its size, it feels cramped with how much stuff is in it.',-1
+'Large Room','It is almost pitch black. You can barely make anything out',3

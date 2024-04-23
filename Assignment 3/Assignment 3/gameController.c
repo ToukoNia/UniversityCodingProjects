@@ -39,7 +39,7 @@ int pickupItem(struct inventory *inv,void *equipment,int type){ //handles the lo
     int objectIndex=-1;
     char validChoices[2]={'Y','N'};
 
-    if ((type == 0 && inv->itemCount == 10) || (type == 1 && inv->potionCount == 10)) {
+    if ((type == 0 && inv->itemCount == MAX_ITEMS) || (type == 1 && inv->potionCount == MAX_ITEMS)) { //if the inventory is full, check what to drop
         choice = sanitisedUserInput("Your inventory is full, would you like to drop something? (Y/N) ", validChoices, 2);
         if (choice == 'Y') {
             if (type == 0) {
@@ -47,7 +47,7 @@ int pickupItem(struct inventory *inv,void *equipment,int type){ //handles the lo
             } else {
                 printPotionInventory(*inv);
             }
-            index = sanitisedUserNumberInput("Enter a number between 1 and 10 of the item you would like to drop: ", 1, 10) - 1;
+            index = sanitisedUserNumberInput("Enter a number between 1 and 10 of the item you would like to drop: ", 1, 10) - 1;    //gets the index of what they want to drop
             if (type == 0) {
                 printf("You dropped %s.\n", inv->items[index].base.name);
             } else {
@@ -157,6 +157,9 @@ int equipWeapon(struct weapon *equippedWeapon,struct weapon wp){
     int index;
     printSeparator();
     index=equippedWeapon->base.index;
+    if (!index){
+        index=-1;
+    }
     printf("You equipped %s instead of %s.\n",wp.base.name,equippedWeapon->base.name);
     printf("Stat Changes:\n");
     printf("Lower Damage: %d -> %d.\n",equippedWeapon->lDamage,wp.lDamage);
@@ -174,6 +177,17 @@ void printPlayerStats(struct gameController player){
     printItemInfo(&player.equippedWeapon,2);
     printf("You currently have %d items, of which %d are potions.\n",player.inv.itemCount+player.inv.potionCount,player.inv.potionCount);
     printSeparator();
+}
+void getPlayerScore(struct inventory inv){
+    int value=0;
+    for (int i=0;i<inv.itemCount;i++){
+        value+=inv.items[i].base.value;
+    }
+    for (int i=0;i<inv.potionCount;i++){
+        value+=inv.potions[i].base.value;
+    }
+    return value;
+
 }
 int mainMenu(struct gameController *player){
      char choice;

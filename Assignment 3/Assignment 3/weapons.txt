@@ -1,6 +1,6 @@
 Name,lowerDamage,upperDamage,Description,Value (first weapon must be the default undropable weapon)
-"Your fist",1,2,"You are unarmed. Perhaps not the best decision.",0
-"Dull Knife",1,3,"A knife. As you look closer, it seems to actually be a soft toy. I wonder who left it down here?",0
-"Torch",1,4,"A lit torch. How did you get this in your pocket?",0
-"Knife",3,4,"A knife. It has a jewel in the pommel. Be careful of your fingers.",1
-"Sword",4,6,"It's shiny, and looks powerful.",0
+'Fist',1,2,'You are unarmed. Perhaps not the best decision.',0
+'Dull Knife',1,3,'A knife. As you look closer, it seems to actually be a soft toy. I wonder who left it down here?',0
+'Torch',1,4,'A lit torch. How did you get this in your pocket?',0
+'Knife',3,4,'A knife. It has a jewel in the pommel. Be careful of your fingers.',1
+'Sword',4,6,'It is shiny, and looks powerful.',0

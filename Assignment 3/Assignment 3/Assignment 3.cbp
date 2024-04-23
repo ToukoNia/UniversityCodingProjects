@@ -31,6 +31,42 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="combat.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="combat.h" />
+		<Unit filename="gameController.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gameController.h" />
+		<Unit filename="items.txt" />
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="monsters.txt" />
+		<Unit filename="potions.txt" />
+		<Unit filename="proceduralGen.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="proceduralGen.h" />
+		<Unit filename="roomOptions.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="roomOptions.h" />
+		<Unit filename="roomTypes.txt" />
+		<Unit filename="saveInv.txt" />
+		<Unit filename="savePlayer.txt" />
+		<Unit filename="saveRooms.txt" />
+		<Unit filename="setup.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="setup.h" />
+		<Unit filename="setupStructs.h" />
+		<Unit filename="userManagement.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="userManagement.h" />
+		<Unit filename="weapons.txt" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

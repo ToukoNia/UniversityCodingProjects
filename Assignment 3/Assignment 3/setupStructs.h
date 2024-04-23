@@ -4,10 +4,11 @@
 #define DESC_SIZE 200
 #define NAME_LEN 20
 #define MAX_ITEMS 8
-#define NUM_ITEMS 3
+#define NUM_ITEMS 7
 #define NUM_WEAPONS 5
 #define NUM_POTIONS 6
-
+#define MAX_ROOMS 20
+#define NUM_MONSTERS 5
 
 struct monster{
     char name[NAME_LEN];
@@ -58,8 +59,9 @@ struct roomNode{
     int objectIndex;                  //needs to be an index, as the weapons and potions are in seperate lists. -1 if none.
     int objectList;                 //indicates which list the object belongs to.
     int monsterIndex;               //same as above for monsters, -1 if none
-    int connections[4];             //array of the indices of the rooms that it is connected to
+    int connections[4];             //array of the indices of the rooms that it is connected to (N,E,S,W)
     int connectionCount;
+    int lastSide;
 };
 
 struct gameController{

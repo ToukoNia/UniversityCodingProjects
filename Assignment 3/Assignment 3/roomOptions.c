@@ -12,16 +12,16 @@ void switchRoom(int *currentRoomIndex,int room,int *lastRoomIndex){
     *currentRoomIndex=room;
 }
 
-void printRoomDirections(struct roomNode room,int first) {
+void printRoomDirections(struct roomNode room,int notFirst) {
     int count=0;
 
-    if (room.connectionCount>1){
+    if (!notFirst){
+        printf("You can only see one open exit and the exit to the dungeon.\n");
+        printf("The open exit is on the ");
+    } else if (room.connectionCount>1){
         printf("%d exits, including the one you entered from.\n", room.connectionCount);
         printf("These are on the ");
-    } else if (first){
-        printf("You can only see one exit in front of you.\n");
-        printf("This is on the ");
-    }else{
+    } else{
         printf("It appears to be a dead end, you can only return the way you came.\n");
         printf("This is on the ");
     }
@@ -56,7 +56,7 @@ void printRoomDirections(struct roomNode room,int first) {
 void lookAroundRoom(struct gameController *player, struct roomNode *room,struct objects lists){
     char choice,validOptions[2]={'P','L'};
     printf("You look around the room.\n\n%s\n",room->description);
-    printRoomDirections(*room,player->currentRoomIndex==player->lastRoomIndex);
+    printRoomDirections(*room,player->currentRoomIndex);
     if (room->objectIndex!=-1){
         void *object;
         printf("There is an item on the floor!\n");
@@ -81,7 +81,7 @@ void lookAroundRoom(struct gameController *player, struct roomNode *room,struct 
         if (choice == 'P'&&room->objectList!=2){
             room->objectIndex=pickupItem(&player->inv,object,room->objectList);
         } else if (choice == 'P'&&room->objectList==2){
-            room->objectIndex=equipWeapon(player,*(struct weapon*)object);
+            room->objectIndex=equipWeapon(&player->equippedWeapon,*(struct weapon*)object);
         } else if (choice == 'L'){
             printf("You left the item.\n");
         }
@@ -100,21 +100,36 @@ int roomOptions(struct gameController *player,struct roomNode *room, struct obje
         else if (choice=='O'){
             flag=mainMenu(player);
             if (flag){
-                printf("You are exiting the program.\n Thank you for playing.\n");
-                return 1;
+                printf("You are exiting the program.\nThank you for playing.\n");
+                return 2;
             }
         }
         else if (choice == 'E') {
             if (!checked){
-                printRoomDirections(*room,player->currentRoomIndex==player->lastRoomIndex);
+                printRoomDirections(*room,player->currentRoomIndex);
             }
-            index=sanitisedUserDirectionInput(room->connections);
-            if (index!=-1){
-                switchRoom(&player->currentRoomIndex,room->connections[index],&player->lastRoomIndex);
+            if (player->currentRoomIndex){
+                index=sanitisedUserDirectionInput(room->connections,player->currentRoomIndex);
+                if (index!=-1){
+                    switchRoom(&player->currentRoomIndex,room->connections[index],&player->lastRoomIndex);
+                } else{
+                    printf("You stayed in the room.\n");
+                    choice=='O';    //continues the loop
+                }
             } else{
-                printf("You stayed in the room.\n");
-                choice=='S';    //continues the loop
+                index=sanitisedUserDirectionInput(room->connections,player->currentRoomIndex);
+                if (index==2){
+                    return 1;
+                } else{
+                    if (index!=-1){
+                        switchRoom(&player->currentRoomIndex,room->connections[index],&player->lastRoomIndex);
+                    } else{
+                        printf("You stayed in the room.\n");
+                        choice=='O';    //continues the loop
+                    }
+                }
             }
+
         }
     } while (choice!='E');
     return 0;
@@ -124,18 +139,20 @@ int enterRoom(struct gameController *player,struct roomNode *room,struct monster
     int combatOutcome,flag;
     flag=combatOutcome=1;
 
-    printf("You have entered a %s.\n",room->type);
+    printf("You have entered %s.\n",room->type);
 
     if (room->monsterIndex!=-1){
-        combatOutcome=combatInitiate(player,*enemy);
+        combatOutcome=combatInitiate(player,enemy);
         if (combatOutcome==1){
             removeMonster(&room->monsterIndex);
         }
     }
     if (combatOutcome==1) {
         flag=roomOptions(player,room,lists);
-        if (flag){
+        if (flag==2){
             return 2;
+        } else if (flag == 1){
+            return 3;
         }
     }
     else if (combatOutcome==0){
